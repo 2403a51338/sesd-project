@@ -1,0 +1,20 @@
+{
+  "name": "rock-paper-scissors-tournament",
+  "version": "1.0.0",
+  "description": "A modern, responsive, browser-based **Rock Paper Scissors Tournament** game built with pure **HTML5, CSS3, and Vanilla JavaScript**. Designed as a complete, polished mini-game suitable for a BTech Computer Science & Engineering Software Engineering mini-project demonstration.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^8.6.0",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/cli": "^8.6.0",
+    "@capacitor/core": "^8.6.0",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.4"
+  }
+}

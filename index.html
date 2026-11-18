@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0a0c16">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+</head>
+<body>
+  <!-- Ambient Interactive Particle Canvas -->
+  <canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+  <!-- Sound Toggle & Global Controls Bar -->
+  <header class="global-header">
+    <div class="brand">
+      <img src="assets/images/logo.svg" alt="RPS Tournament Logo" class="brand-logo">
+    </div>
+    <div class="header-controls">
+      <button id="btn-stats" class="icon-btn" title="View Statistics" aria-label="View Statistics">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+          <path d="M4 19h16v2H4zm2-4h3v-4H6zm5 0h3V5h-3zm5 0h3V9h-3z"/>
+        </svg>
+      </button>
+      <button id="btn-audio-toggle" class="icon-btn" title="Toggle Sound" aria-label="Toggle Sound">
+        <span id="audio-icon">🔊</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Game Container -->
+  <main class="game-container">
+
+    <!-- SCREEN 1: HOME SCREEN -->
+    <section id="screen-home" class="game-screen active">
+      <div class="glass-card hero-card">
+        <div class="trophy-badge floating">
+          <img src="assets/images/trophy.svg" alt="Championship Trophy" class="hero-trophy">
+        </div>
+        <h1 class="glitch-title" data-text="ROCK PAPER SCISSORS">ROCK PAPER SCISSORS</h1>
+        <h2 class="sub-title">CHAMPIONSHIP TOURNAMENT</h2>
+        <p class="hero-desc">
+          Rise through 4 intense rounds, outsmart adaptive cyber bots, and claim the Grand Championship Trophy in the ultimate battle of wits!
+        </p>
+
+        <!-- Player Quick Stats / Best Score Banner -->
+        <div class="stats-banner glass-panel">
+          <div class="stat-item">
+            <span class="stat-label">Tournaments Won</span>
+            <span id="home-tournaments-won" class="stat-val highlight">0</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-label">Win Rate</span>
+            <span id="home-win-rate" class="stat-val">0%</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-label">Best Streak</span>
+            <span id="home-best-streak" class="stat-val">0</span>
+          </div>
+        </div>
+
+        <!-- Menu Action Buttons -->
+        <div class="menu-actions">
+          <button id="btn-home-start" class="btn btn-primary pulse-btn">
+            <span class="btn-icon">⚡</span> Start Tournament
+          </button>
+          <div class="btn-group">
+            <button id="btn-home-instructions" class="btn btn-secondary">
+              <span>📖</span> How to Play
+            </button>
+            <button id="btn-home-leaderboard" class="btn btn-secondary">
+              <span>🏆</span> Leaderboard
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 2: PLAYER REGISTRATION SCREEN -->
+    <section id="screen-register" class="game-screen">
+      <div class="glass-card form-card">
+        <button class="back-link btn-back-home" title="Back to Home">← Back to Menu</button>
+        <h2 class="section-title">PLAYER REGISTRATION</h2>
+        <p class="section-desc">Create your fighter codename to enter the Cyber Tournament arena.</p>
+
+        <form id="register-form" onsubmit="return false;">
+          <div class="form-group">
+            <label for="player-username">Fighter Codename</label>
+            <div class="input-wrap">
+              <input type="text" id="player-username" maxlength="15" placeholder="Enter codename (e.g., CyberAce)" autocomplete="off" required>
+              <button type="button" id="btn-random-name" class="btn-random" title="Generate Random Codename">🎲 Random</button>
+            </div>
+            <span id="username-error" class="input-error" aria-live="polite"></span>
+          </div>
+
+          <!-- Avatar Selection -->
+          <div class="form-group">
+            <label id="avatar-label">Choose Combat Avatar</label>
+            <div class="avatar-grid" role="radiogroup" aria-labelledby="avatar-label">
+              <button type="button" class="avatar-option selected" data-avatar="⚡" role="radio" aria-checked="true" aria-label="Avatar Lightning">⚡</button>
+              <button type="button" class="avatar-option" data-avatar="🤖" role="radio" aria-checked="false" aria-label="Avatar Robot">🤖</button>
+              <button type="button" class="avatar-option" data-avatar="🦊" role="radio" aria-checked="false" aria-label="Avatar Fox">🦊</button>
+              <button type="button" class="avatar-option" data-avatar="🥷" role="radio" aria-checked="false" aria-label="Avatar Ninja">🥷</button>
+              <button type="button" class="avatar-option" data-avatar="🔥" role="radio" aria-checked="false" aria-label="Avatar Fire">🔥</button>
+              <button type="button" class="avatar-option" data-avatar="👾" role="radio" aria-checked="false" aria-label="Avatar Invader">👾</button>
+            </div>
+          </div>
+
+          <div class="action-buttons">
+            <button type="submit" id="btn-register-next" class="btn btn-primary full-width">
+              Select Difficulty →
+            </button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- SCREEN 3: DIFFICULTY SELECTION SCREEN -->
+    <section id="screen-difficulty" class="game-screen">
+      <div class="glass-card wide-card">
+        <button id="btn-back-register" class="back-link">← Back to Registration</button>
+        <h2 class="section-title">SELECT TOURNAMENT DIFFICULTY</h2>
+        <p class="section-desc">Choose how intensely the neural network bots adapt to your battle tactics.</p>
+
+        <div class="difficulty-grid">
+          <!-- Casual -->
+          <div class="difficulty-card" data-difficulty="casual" tabindex="0" role="button" aria-label="Select Casual difficulty">
+            <div class="diff-header">
+              <span class="diff-badge green">Casual</span>
+              <span class="diff-icon">🟢</span>
+            </div>
+            <h3 class="diff-title">Recruit Circuit</h3>
+            <p class="diff-desc">Relaxed AI logic. Bots make mistakes, offer visual play hints, and have forgiving decision weights.</p>
+            <ul class="diff-perks">
+              <li>✓ Basic move patterns</li>
+              <li>✓ AI thinking delay: Standard</li>
+              <li>✓ Best-of-3 matches</li>
+            </ul>
+          </div>
+
+          <!-- Standard -->
+          <div class="difficulty-card selected" data-difficulty="standard" tabindex="0" role="button" aria-label="Select Standard difficulty (Recommended)">
+            <div class="diff-ribbon">Recommended</div>
+            <div class="diff-header">
+              <span class="diff-badge purple">Standard</span>
+              <span class="diff-icon">🟣</span>
+            </div>
+            <h3 class="diff-title">Tournament Pro</h3>
+            <p class="diff-desc">The authentic competitive experience. Bots track frequency, shift strategies, and punish repetition.</p>
+            <ul class="diff-perks">
+              <li>✓ Markov chain pattern tracking</li>
+              <li>✓ Adaptive opponent personalities</li>
+              <li>✓ Official Tournament best-of-3</li>
+            </ul>
+          </div>
+
+          <!-- Hardcore -->
+          <div class="difficulty-card" data-difficulty="hardcore" tabindex="0" role="button" aria-label="Select Hardcore difficulty">
+            <div class="diff-header">
+              <span class="diff-badge red">Hardcore</span>
+              <span class="diff-icon">🔴</span>
+            </div>
+            <h3 class="diff-title">Neural Overdrive</h3>
+            <p class="diff-desc">Master bots counter your tendencies ruthlessly. Fast countdowns and razor-sharp predictive algorithms.</p>
+            <ul class="diff-perks">
+              <li>✓ Aggressive counter-play</li>
+              <li>✓ Lightning 2-second countdowns</li>
+              <li>✓ High prestige leaderboard bonus</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="action-buttons center-actions">
+          <button id="btn-start-tournament" class="btn btn-primary pulse-btn">
+            ENTER TOURNAMENT ARENA ⚔️
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 4: TOURNAMENT ARENA SCREEN -->
+    <section id="screen-arena" class="game-screen">
+      <!-- Tournament Progress Map Bar -->
+      <div class="arena-header glass-panel">
+        <div class="bracket-map" aria-label="Tournament Rounds Progress">
+          <div class="round-step active" data-round="1">
+            <span class="step-num">R1</span>
+            <span class="step-name">Quarterfinal</span>
+            <span class="step-badge">Rookie Bot</span>
+          </div>
+          <div class="bracket-connector"></div>
+          <div class="round-step locked" data-round="2">
+            <span class="step-num">R2</span>
+            <span class="step-name">Semifinal</span>
+            <span class="step-badge">Smart Bot</span>
+          </div>
+          <div class="bracket-connector"></div>
+          <div class="round-step locked" data-round="3">
+            <span class="step-num">R3</span>
+            <span class="step-name">Final</span>
+            <span class="step-badge">Master Bot</span>
+          </div>
+          <div class="bracket-connector"></div>
+          <div class="round-step locked" data-round="4">
+            <span class="step-num">R4</span>
+            <span class="step-name">Championship</span>
+            <span class="step-badge">Champion Bot</span>
+          </div>
+        </div>
+
+        <div class="arena-nav">
+          <button id="btn-quit-tournament" class="btn-subtle" title="Forfeit / Restart Tournament">
+            ✕ Forfeit
+          </button>
+        </div>
+      </div>
+
+      <!-- Arena Battlefield Card -->
+      <div class="glass-card arena-card">
+        <!-- Match Status Banner -->
+        <div class="match-meta">
+          <div class="round-info">
+            <span id="arena-round-tag" class="pill-tag">ROUND 1: QUARTERFINAL</span>
+            <span id="arena-diff-tag" class="pill-tag diff">STANDARD</span>
+          </div>
+          <div class="match-objective">First to <strong>2 Wins</strong> Advances</div>
+        </div>
+
+        <!-- Clash Combat Zone -->
+        <div class="combat-zone">
+          <!-- Opponent Fighter Side -->
+          <div class="fighter-card opponent-card">
+            <div class="fighter-header">
+              <div class="avatar-ring bot-ring">
+                <img id="opponent-avatar" src="assets/images/bot_rookie.svg" alt="Opponent Avatar" class="fighter-avatar">
+              </div>
+              <div class="fighter-meta">
+                <div class="fighter-name-row">
+                  <h3 id="opponent-name">Rookie Bot</h3>
+                  <span id="opponent-level" class="level-badge">LVL 1</span>
+                </div>
+                <div id="opponent-dialogue" class="speech-bubble" aria-live="polite">
+                  "Beep boop! Ready for your first match?"
+                </div>
+              </div>
+            </div>
+
+            <!-- Score / Win Dots -->
+            <div class="score-indicator">
+              <span class="score-label">MATCH SCORE</span>
+              <div class="win-orbs" id="opponent-score-orbs">
+                <span class="orb" data-point="1"></span>
+                <span class="orb" data-point="2"></span>
+              </div>
+            </div>
+
+            <!-- Bot Choice Display Box -->
+            <div class="choice-reveal-box" id="opponent-reveal-box">
+              <div class="choice-slot" id="opponent-choice-display">
+                <span class="mystery-q">?</span>
+              </div>
+              <span class="choice-tag" id="opponent-choice-label">Waiting...</span>
+            </div>
+          </div>
+
+          <!-- VS / Countdown Clash Center Stage -->
+          <div class="vs-center-stage">
+            <div class="vs-badge">VS</div>
+            <div id="clash-countdown" class="countdown-badge hidden">3</div>
+            <div id="clash-result-banner" class="clash-banner hidden" aria-live="assertive">
+              <span id="clash-verdict">WIN</span>
+              <span id="clash-sub">Rock crushes Scissors!</span>
+            </div>
+            <div class="action-status" id="arena-instruction">Pick your weapon below:</div>
+          </div>
+
+          <!-- Player Fighter Side -->
+          <div class="fighter-card player-card">
+            <div class="fighter-header">
+              <div class="avatar-ring player-ring">
+                <span id="player-avatar-display" class="fighter-avatar-emoji">⚡</span>
+              </div>
+              <div class="fighter-meta">
+                <div class="fighter-name-row">
+                  <h3 id="player-name-display">Player</h3>
+                  <span class="level-badge player">CHALLENGER</span>
+                </div>
+                <div class="player-rank-sub">Tournament Contender</div>
+              </div>
+            </div>
+
+            <!-- Score / Win Dots -->
+            <div class="score-indicator">
+              <span class="score-label">MATCH SCORE</span>
+              <div class="win-orbs" id="player-score-orbs">
+                <span class="orb" data-point="1"></span>
+                <span class="orb" data-point="2"></span>
+              </div>
+            </div>
+
+            <!-- Player Choice Display Box -->
+            <div class="choice-reveal-box" id="player-reveal-box">
+              <div class="choice-slot" id="player-choice-display">
+                <span class="mystery-q">?</span>
+              </div>
+              <span class="choice-tag" id="player-choice-label">Your Move</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Weapons Selection Deck -->
+        <div class="weapons-container">
+          <div class="weapons-header">
+            <span>SELECT YOUR HAND GESTURE</span>
+            <span class="hotkeys-hint">Hotkeys: [1] Rock · [2] Paper · [3] Scissors</span>
+          </div>
+
+          <div class="weapons-grid">
+            <!-- Rock Button -->
+            <button class="weapon-btn" data-choice="rock" id="btn-choice-rock" aria-label="Select Rock">
+              <div class="weapon-glow"></div>
+              <img src="assets/images/rock.svg" alt="Rock Icon" class="weapon-icon">
+              <span class="weapon-title">ROCK</span>
+              <span class="weapon-desc">Crushes Scissors</span>
+              <span class="key-badge">1 / R</span>
+            </button>
+
+            <!-- Paper Button -->
+            <button class="weapon-btn" data-choice="paper" id="btn-choice-paper" aria-label="Select Paper">
+              <div class="weapon-glow"></div>
+              <img src="assets/images/paper.svg" alt="Paper Icon" class="weapon-icon">
+              <span class="weapon-title">PAPER</span>
+              <span class="weapon-desc">Covers Rock</span>
+              <span class="key-badge">2 / P</span>
+            </button>
+
+            <!-- Scissors Button -->
+            <button class="weapon-btn" data-choice="scissors" id="btn-choice-scissors" aria-label="Select Scissors">
+              <div class="weapon-glow"></div>
+              <img src="assets/images/scissors.svg" alt="Scissors Icon" class="weapon-icon">
+              <span class="weapon-title">SCISSORS</span>
+              <span class="weapon-desc">Cuts Paper</span>
+              <span class="key-badge">3 / S</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Match History Feed -->
+        <div class="history-strip glass-panel">
+          <div class="history-title">MATCH TURNS LOG:</div>
+          <div class="history-log" id="history-log" aria-live="polite">
+            <span class="empty-log">Round just started. Choose your first move!</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 5: ROUND RESULT MODAL (OVERLAY) -->
+    <div id="modal-round-result" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="round-result-title">
+      <div class="modal-card glass-card result-dialog animate-pop">
+        <div id="modal-result-icon" class="result-badge-icon">🎉</div>
+        <h2 id="round-result-title" class="result-heading">ROUND 1 VICTORY!</h2>
+        <p id="round-result-sub" class="result-subtext">You defeated Rookie Bot (2 - 0)</p>
+
+        <div class="result-stats-box glass-panel">
+          <div class="res-stat">
+            <span class="res-label">Turns Played</span>
+            <span id="res-turns-played" class="res-val">2</span>
+          </div>
+          <div class="res-stat">
+            <span class="res-label">Player Wins</span>
+            <span id="res-player-wins" class="res-val highlight">2</span>
+          </div>
+          <div class="res-stat">
+            <span class="res-label">Bot Wins</span>
+            <span id="res-bot-wins" class="res-val">0</span>
+          </div>
+          <div class="res-stat">
+            <span class="res-label">Draws</span>
+            <span id="res-draws" class="res-val">0</span>
+          </div>
+        </div>
+
+        <div class="modal-actions" id="round-result-actions">
+          <button id="btn-next-round" class="btn btn-primary pulse-btn">
+            Advance to Semifinal →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SCREEN 6: TOURNAMENT END SCREEN (VICTORY OR ELIMINATION) -->
+    <section id="screen-tournament-end" class="game-screen">
+      <div class="glass-card wide-card end-game-card">
+        <!-- Victory Section -->
+        <div id="end-victory-container" class="end-state-container">
+          <div class="trophy-spotlight">
+            <img src="assets/images/trophy.svg" alt="Grand Trophy" class="grand-trophy animate-bounce">
+            <div class="trophy-glow-halo"></div>
+          </div>
+          <h1 class="glitch-title gold" data-text="TOURNAMENT CHAMPION!">TOURNAMENT CHAMPION!</h1>
+          <h2 class="sub-title">GRAND PRIZE VICTORY</h2>
+          <p class="end-flavor">
+            Incredible skill! You conquered all 4 cyber bots, out-thought the Champion Bot, and claimed the Cyber RPS Crown!
+          </p>
+        </div>
+
+        <!-- Defeat Section -->
+        <div id="end-defeat-container" class="end-state-container hidden">
+          <div class="defeat-icon">💀</div>
+          <h1 class="glitch-title red" data-text="ELIMINATED!">ELIMINATED!</h1>
+          <h2 class="sub-title">TOURNAMENT RUN ENDED</h2>
+          <p id="defeat-reason" class="end-flavor">
+            You were eliminated by Smart Bot in the Semifinals. Adjust your patterns and fight again!
+          </p>
+        </div>
+
+        <!-- Tournament Run Summary Box -->
+        <div class="run-summary-box glass-panel">
+          <h3 class="summary-title">TOURNAMENT PERFORMANCE SUMMARY</h3>
+          <div class="summary-grid">
+            <div class="summary-item">
+              <span class="sum-label">Fighter</span>
+              <span id="summary-player-name" class="sum-val">Player</span>
+            </div>
+            <div class="summary-item">
+              <span class="sum-label">Difficulty</span>
+              <span id="summary-difficulty" class="sum-val">Standard</span>
+            </div>
+            <div class="summary-item">
+              <span class="sum-label">Rounds Cleared</span>
+              <span id="summary-rounds-cleared" class="sum-val highlight">4 / 4</span>
+            </div>
+            <div class="summary-item">
+              <span class="sum-label">Total Match Wins</span>
+              <span id="summary-matches-won" class="sum-val">8</span>
+            </div>
+            <div class="summary-item">
+              <span class="sum-label">Run Win Rate</span>
+              <span id="summary-win-rate" class="sum-val">80%</span>
+            </div>
+            <div class="summary-item">
+              <span class="sum-label">Favorite Weapon</span>
+              <span id="summary-fav-weapon" class="sum-val">Rock (✊)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- End Buttons -->
+        <div class="end-actions">
+          <button id="btn-play-again" class="btn btn-primary pulse-btn">
+            ⚔️ Play New Tournament
+          </button>
+          <button id="btn-end-leaderboard" class="btn btn-secondary">
+            🏆 View Leaderboard
+          </button>
+          <button id="btn-end-home" class="btn btn-subtle">
+            Return to Menu
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 7: LEADERBOARD SCREEN -->
+    <section id="screen-leaderboard" class="game-screen">
+      <div class="glass-card wide-card">
+        <div class="card-header-bar">
+          <button class="back-link btn-back-home">← Back to Menu</button>
+          <h2 class="section-title">HALL OF CHAMPIONS</h2>
+          <button id="btn-clear-leaderboard" class="btn-danger-outline" title="Reset Saved Leaderboard">
+            🗑️ Clear Data
+          </button>
+        </div>
+        <p class="section-desc">Persistent rankings saved in browser LocalStorage. Win tournaments to top the leaderboard!</p>
+
+        <!-- Leaderboard Filter Tabs -->
+        <div class="filter-tabs" role="tablist">
+          <button class="tab-btn active" data-sort="tournaments" role="tab" aria-selected="true">Tournaments Won</button>
+          <button class="tab-btn" data-sort="matches" role="tab" aria-selected="false">Matches Won</button>
+          <button class="tab-btn" data-sort="winrate" role="tab" aria-selected="false">Win Rate</button>
+        </div>
+
+        <!-- Leaderboard Table Container -->
+        <div class="table-container glass-panel">
+          <table class="leaderboard-table" aria-label="Hall of Champions Leaderboard">
+            <thead>
+              <tr>
+                <th scope="col" class="th-rank">Rank</th>
+                <th scope="col">Fighter</th>
+                <th scope="col">Tournaments Won</th>
+                <th scope="col">Matches Won</th>
+                <th scope="col">Win Rate</th>
+                <th scope="col">Difficulty</th>
+                <th scope="col">Last Played</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+              <!-- Dynamically populated via script.js -->
+            </tbody>
+          </table>
+          <div id="leaderboard-empty" class="empty-state hidden">
+            <span class="empty-icon">🏆</span>
+            <p>No champions recorded yet. Play and win a tournament to earn your spot!</p>
+          </div>
+        </div>
+
+        <div class="action-buttons center-actions">
+          <button id="btn-leaderboard-play" class="btn btn-primary">
+            Start Tournament Now ⚡
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SCREEN 8: INSTRUCTIONS / HOW TO PLAY SCREEN -->
+    <section id="screen-instructions" class="game-screen">
+      <div class="glass-card wide-card instructions-card">
+        <button class="back-link btn-back-home">← Back to Menu</button>
+        <h2 class="section-title">HOW TO PLAY & TOURNAMENT RULES</h2>
+        <p class="section-desc">Master the mechanics and learn how to defeat all four cyber bot personalities.</p>
+
+        <div class="instructions-grid">
+          <!-- Classic Rules -->
+          <div class="inst-card glass-panel">
+            <div class="inst-icon">✊ ✋ ✌️</div>
+            <h3>Core Game Rules</h3>
+            <ul class="rule-list">
+              <li><strong>Rock beats Scissors:</strong> Crushes the blades.</li>
+              <li><strong>Scissors beats Paper:</strong> Slices through sheet.</li>
+              <li><strong>Paper beats Rock:</strong> Smothers and covers.</li>
+              <li><strong>Identical Choices = Draw:</strong> The turn is replayed without awarding points.</li>
+            </ul>
+          </div>
+
+          <!-- Tournament Format -->
+          <div class="inst-card glass-panel">
+            <div class="inst-icon">🏆</div>
+            <h3>Tournament System</h3>
+            <ul class="rule-list">
+              <li><strong>4 Consecutive Rounds:</strong> Quarterfinal, Semifinal, Final, and the Grand Championship Bonus Match.</li>
+              <li><strong>Best of Three:</strong> First combatant to win <strong>2 turns</strong> wins the match and advances.</li>
+              <li><strong>Single Elimination:</strong> Lose a match and your tournament run ends immediately.</li>
+            </ul>
+          </div>
+
+          <!-- Opponent Personalities -->
+          <div class="inst-card glass-panel full-col">
+            <div class="inst-icon">🤖</div>
+            <h3>Meet Your Cyber Opponents</h3>
+            <div class="bots-showcase">
+              <div class="bot-profile">
+                <img src="assets/images/bot_rookie.svg" alt="Rookie Bot" class="mini-bot">
+                <h4>Rookie Bot (R1)</h4>
+                <p>Beginner AI. Uses basic random generation with slight rock favoritism. Great for warm-ups.</p>
+              </div>
+              <div class="bot-profile">
+                <img src="assets/images/bot_smart.svg" alt="Smart Bot" class="mini-bot">
+                <h4>Smart Bot (R2)</h4>
+                <p>Intermediate AI. Observes your recent choices and uses win-stay / lose-shift heuristics.</p>
+              </div>
+              <div class="bot-profile">
+                <img src="assets/images/bot_master.svg" alt="Master Bot" class="mini-bot">
+                <h4>Master Bot (R3)</h4>
+                <p>Advanced AI. Uses Markov sequence prediction to counter your next anticipated gesture.</p>
+              </div>
+              <div class="bot-profile">
+                <img src="assets/images/bot_champion.svg" alt="Champion Bot" class="mini-bot">
+                <h4>Champion Bot (R4)</h4>
+                <p>Grandmaster AI. Psychological counter-play, streak punishers, and deceptive adaptation.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="action-buttons center-actions">
+          <button id="btn-instructions-play" class="btn btn-primary pulse-btn">
+            I'm Ready to Fight! ⚔️
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATISTICS MODAL / SCREEN (OVERLAY) -->
+    <div id="modal-stats" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="stats-modal-title">
+      <div class="modal-card glass-card stats-modal animate-pop">
+        <div class="modal-head">
+          <h2 id="stats-modal-title" class="section-title">CAREER COMBAT STATS</h2>
+          <button id="btn-close-stats" class="modal-close" aria-label="Close Statistics">✕</button>
+        </div>
+        <p class="section-desc">Lifetime performance records across all tournaments played on this device.</p>
+
+        <div class="stats-overview-grid">
+          <div class="stat-box glass-panel">
+            <span class="box-num highlight" id="stat-tournaments-played">0</span>
+            <span class="box-label">Tournaments Played</span>
+          </div>
+          <div class="stat-box glass-panel">
+            <span class="box-num gold" id="stat-tournaments-won">0</span>
+            <span class="box-label">Tournaments Won</span>
+          </div>
+          <div class="stat-box glass-panel">
+            <span class="box-num" id="stat-matches-won">0</span>
+            <span class="box-label">Match Wins</span>
+          </div>
+          <div class="stat-box glass-panel">
+            <span class="box-num" id="stat-matches-lost">0</span>
+            <span class="box-label">Match Losses</span>
+          </div>
+          <div class="stat-box glass-panel">
+            <span class="box-num highlight" id="stat-overall-winrate">0%</span>
+            <span class="box-label">Overall Win Rate</span>
+          </div>
+          <div class="stat-box glass-panel">
+            <span class="box-num" id="stat-current-streak">0</span>
+            <span class="box-label">Current Streak</span>
+          </div>
+        </div>
+
+        <!-- Weapon Usage Distribution -->
+        <div class="weapon-stats glass-panel">
+          <h3>Gesture Preference Breakdown</h3>
+          <div class="bar-stat">
+            <div class="bar-labels">
+              <span>✊ Rock</span>
+              <span id="stat-rock-count">0 (0%)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill rock" id="bar-rock" style="width: 33%"></div>
+            </div>
+          </div>
+          <div class="bar-stat">
+            <div class="bar-labels">
+              <span>✋ Paper</span>
+              <span id="stat-paper-count">0 (0%)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill paper" id="bar-paper" style="width: 33%"></div>
+            </div>
+          </div>
+          <div class="bar-stat">
+            <div class="bar-labels">
+              <span>✌️ Scissors</span>
+              <span id="stat-scissors-count">0 (0%)</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill scissors" id="bar-scissors" style="width: 34%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="btn-stats-close-bottom" class="btn btn-secondary">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFIRMATION DIALOG MODAL -->
+    <div id="modal-confirm" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <div class="modal-card glass-card confirm-dialog animate-pop">
+        <div class="confirm-icon" id="confirm-icon">⚠️</div>
+        <h3 id="confirm-title" class="confirm-title">Are you sure?</h3>
+        <p id="confirm-desc" class="confirm-desc">This action will reset your current tournament progress.</p>
+        <div class="modal-actions">
+          <button id="btn-confirm-cancel" class="btn btn-secondary">Cancel</button>
+          <button id="btn-confirm-ok" class="btn btn-danger">Confirm</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Audio Elements Fallback (Web Audio API is also primary in script.js) -->
+  <div id="audio-container" style="display:none;" aria-hidden="true">
+    <audio id="snd-click" preload="auto" src="assets/sounds/click.wav"></audio>
+    <audio id="snd-countdown" preload="auto" src="assets/sounds/countdown.wav"></audio>
+    <audio id="snd-clash" preload="auto" src="assets/sounds/clash.wav"></audio>
+    <audio id="snd-win" preload="auto" src="assets/sounds/win.wav"></audio>
+    <audio id="snd-lose" preload="auto" src="assets/sounds/lose.wav"></audio>
+    <audio id="snd-draw" preload="auto" src="assets/sounds/draw.wav"></audio>
+    <audio id="snd-victory" preload="auto" src="assets/sounds/victory.wav"></audio>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

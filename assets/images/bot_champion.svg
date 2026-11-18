@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="champGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="50%" stop-color="#dc2626"/>
+      <stop offset="100%" stop-color="#450a0a"/>
+    </linearGradient>
+    <filter id="champGlow">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#ef4444" flood-opacity="0.8"/>
+    </filter>
+  </defs>
+  <circle cx="50" cy="50" r="46" fill="#180404" stroke="#ef4444" stroke-width="2.5" filter="url(#champGlow)"/>
+  <!-- Crown / Spikes -->
+  <polygon points="50,10 44,24 56,24" fill="#facc15"/>
+  <polygon points="34,14 36,28 42,26" fill="#ef4444"/>
+  <polygon points="66,14 64,28 58,26" fill="#ef4444"/>
+  <polygon points="22,22 30,30 24,34" fill="#facc15"/>
+  <polygon points="78,22 70,30 76,34" fill="#facc15"/>
+  <!-- Menacing Battle Helm -->
+  <polygon points="26,30 74,30 72,70 50,82 28,70" fill="url(#champGrad)"/>
+  <!-- Dark Visor Hollow -->
+  <polygon points="32,40 68,40 64,62 50,68 36,62" fill="#050000"/>
+  <!-- Fierce Crimson Glowing Optics -->
+  <path d="M36 46 L47 50 L46 54 L35 50 Z" fill="#ff2255" filter="url(#champGlow)"/>
+  <path d="M64 46 L53 50 L54 54 L65 50 Z" fill="#ff2255" filter="url(#champGlow)"/>
+  <!-- Cyber Teeth / Grille -->
+  <polygon points="46,60 50,56 54,60 52,65 48,65" fill="#facc15"/>
+  <!-- Heavy Shoulders -->
+  <path d="M16 86 L50 80 L84 86 L88 94 L12 94 Z" fill="#7f1d1d" stroke="#ef4444" stroke-width="1.5"/>
+</svg>

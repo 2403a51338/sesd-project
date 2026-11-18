@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="goldCup" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="50%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#a16207"/>
+    </linearGradient>
+    <filter id="trophyGlow">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#facc15" flood-opacity="0.7"/>
+    </filter>
+  </defs>
+  <!-- Sparkles -->
+  <polygon points="26,20 28,26 34,28 28,30 26,36 24,30 18,28 24,26" fill="#fde047"/>
+  <polygon points="94,16 95,21 100,22 95,23 94,28 93,23 88,22 93,21" fill="#fde047"/>
+  <!-- Handles -->
+  <path d="M34 34 C20 34 20 54 36 60" fill="none" stroke="url(#goldCup)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M86 34 C100 34 100 54 84 60" fill="none" stroke="url(#goldCup)" stroke-width="5" stroke-linecap="round"/>
+  <!-- Main Cup Body -->
+  <path d="M32 26 L88 26 L80 62 C76 76 66 82 60 82 C54 82 44 76 40 62 Z" fill="url(#goldCup)" filter="url(#trophyGlow)"/>
+  <!-- Cup Rim -->
+  <ellipse cx="60" cy="26" rx="28" ry="6" fill="#fef08a"/>
+  <!-- Star on Cup -->
+  <polygon points="60,42 63,49 71,49 65,54 67,61 60,57 53,61 55,54 49,49 57,49" fill="#78350f"/>
+  <!-- Stem -->
+  <rect x="56" y="82" width="8" height="12" fill="url(#goldCup)"/>
+  <rect x="50" y="92" width="20" height="4" rx="2" fill="#facc15"/>
+  <!-- Base Pedestal -->
+  <polygon points="44,96 76,96 82,106 38,106" fill="#3b0764"/>
+  <rect x="48" y="99" width="24" height="4" rx="1" fill="#eab308"/>
+</svg>

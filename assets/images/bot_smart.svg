@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <linearGradient id="smartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#6b21a8"/>
+    </linearGradient>
+  </defs>
+  <circle cx="50" cy="50" r="46" fill="#150a24" stroke="#a855f7" stroke-width="2.5"/>
+  <!-- Sleek Head Form -->
+  <polygon points="28,34 50,20 72,34 74,68 50,78 26,68" fill="url(#smartGrad)"/>
+  <!-- Sleek Cyber Visor -->
+  <polygon points="32,44 50,38 68,44 64,54 50,58 36,54" fill="#090514"/>
+  <!-- Neon Visor Beam -->
+  <path d="M34 47 L66 47" stroke="#e879f9" stroke-width="4" stroke-linecap="round"/>
+  <!-- Target Grid / Sensor lines -->
+  <line x1="50" y1="42" x2="50" y2="52" stroke="#ffffff" stroke-width="1.5" opacity="0.8"/>
+  <circle cx="50" cy="47" r="3" fill="#f43f5e"/>
+  <!-- Head plates and lights -->
+  <circle cx="50" cy="28" r="2.5" fill="#e879f9"/>
+  <rect x="22" y="46" width="4" height="12" rx="2" fill="#a855f7"/>
+  <rect x="74" y="46" width="4" height="12" rx="2" fill="#a855f7"/>
+  <!-- Shoulders -->
+  <path d="M30 74 L50 82 L70 74 L80 88 L20 88 Z" fill="#4c1d95"/>
+</svg>

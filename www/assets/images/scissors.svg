@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="120" height="120">
+  <defs>
+    <linearGradient id="scissorsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="50%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#064e3b"/>
+    </linearGradient>
+    <filter id="glowScissors" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#2dd4bf" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <circle cx="60" cy="60" r="54" fill="#13172c" stroke="url(#scissorsGrad)" stroke-width="3" filter="url(#glowScissors)"/>
+  <!-- Stylized Cyber Scissors -->
+  <g fill="none" stroke="#2dd4bf" stroke-width="4" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Blade 1 -->
+    <path d="M42 80 L58 56 L82 32" stroke="#5eead4" stroke-width="5"/>
+    <!-- Blade 2 -->
+    <path d="M78 80 L62 56 L38 32" stroke="#2dd4bf" stroke-width="5"/>
+  </g>
+  <!-- Handle Rings -->
+  <circle cx="40" cy="80" r="10" fill="#042f2e" stroke="#2dd4bf" stroke-width="4"/>
+  <circle cx="80" cy="80" r="10" fill="#042f2e" stroke="#2dd4bf" stroke-width="4"/>
+  <!-- Central Pivot Bolt -->
+  <circle cx="60" cy="56" r="5" fill="#facc15" stroke="#ffffff" stroke-width="2"/>
+</svg>
